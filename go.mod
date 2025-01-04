@@ -5,6 +5,7 @@ go 1.23
 require (
 	github.com/go-git/go-git/v5 v5.4.2
 	github.com/junegunn/fzf v0.57.0
+	github.com/yassinebenaid/godump v0.11.1
 )
 
 require (

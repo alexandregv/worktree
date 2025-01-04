@@ -11,32 +11,43 @@ import (
 	git "github.com/go-git/go-git/v5"
 )
 
-func getGitWorktrees() (paths []string, err error) {
+func getGitRepo(path string) (repo *git.Repository, err error) {
 	cwd, err := os.Getwd()
 	if err != nil {
 		return nil, err
 	}
-	// cwd = "/var/home/reach/Documents/gotemplate/"
 
-	repo, err := git.PlainOpenWithOptions(cwd, &git.PlainOpenOptions{DetectDotGit: true, EnableDotGitCommonDir: false})
+	repo, err = git.PlainOpenWithOptions(cwd, &git.PlainOpenOptions{DetectDotGit: true, EnableDotGitCommonDir: true})
 	if err != nil {
 		return nil, err
 	}
+	// godump.Dump(repo)
 
+	return repo, err
+}
+
+func getRootRepo(repo *git.Repository) (commonDirRepo *git.Repository, err error) {
+	commonDotGitPath := fmt.Sprintf("%+v\n",
+		reflect.ValueOf(repo.Storer).
+			Elem().FieldByName("fs").
+			Elem().Elem().FieldByName("commonDotGitFs").
+			Elem().Elem().FieldByName("base"),
+	)
+	// fmt.Println(commonDotGitPath)
+	// fmt.Println(commonDotGitPath[:len(commonDotGitPath)-7])
+
+	commonDirRepo, err = getGitRepo(commonDotGitPath[:len(commonDotGitPath)-7])
+	return commonDirRepo, err
+}
+
+func getGitWorktrees(repo *git.Repository) (paths []string, err error) {
 	worktrees, err := repo.Worktrees()
-	// for _, wt := range worktrees {
-	// 	fileInfo, err := wt.Filesystem.Stat("")
-	// 	if err != nil {
-	// 		return nil, err
-	// 	}
-	// 	godump.Dump(fileInfo)
-	// 	fmt.Println("\n---\n")
-	// }
 
 	// Keep only paths as strings
 	paths = []string{}
 	for _, wt := range worktrees {
 		paths = append(paths, fmt.Sprintf("%s", reflect.ValueOf(wt.Filesystem).Elem().FieldByName("base")))
+		fmt.Println(fmt.Sprintf("%s", reflect.ValueOf(wt.Filesystem).Elem().FieldByName("base")))
 	}
 
 	return paths, err
@@ -62,8 +73,25 @@ func initFzfOptions(inputs []string, customOptions []string) (options *fzf.Optio
 }
 
 func main() {
-	// Get Git worktrees
-	worktrees, err := getGitWorktrees()
+	cwd, err := os.Getwd()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "worktree: Could not get current working directory: %s\n", err.Error())
+		os.Exit(1)
+	}
+
+	repo, err := getGitRepo(cwd)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "worktree: Could not get Git repository: %s\n", err.Error())
+		os.Exit(1)
+	}
+
+	rrepo, err := getRootRepo(repo)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "worktree: Could not get root Git repository: %s\n", err.Error())
+		os.Exit(1)
+	}
+
+	worktrees, err := getGitWorktrees(rrepo)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "worktree: Could not get Git worktrees: %s\n", err.Error())
 		os.Exit(1)
