@@ -25,8 +25,12 @@ Add this function at the end of your `~/.bashrc`, `~/.zshrc`, etc:
 
 ```bash
 function wt() {
-  cd $(/var/home/reach/Documents/worktree/main/worktree)
+  output=$(worktree)
+  if [[ $? == 0 ]] && [[ "$output" == /* ]]; then
+    cd "$output"
+  fi
 }
+
 ```
 
 Then source the file or run `exec $SHELL` to restart your shell.
