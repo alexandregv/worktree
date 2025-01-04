@@ -1,0 +1,50 @@
+{
+  "showIntro": false,
+  "commitTitleCharLimit": 72,
+  "prefixes": [
+    {
+      "type": "feat",
+      "description": "a new feature"
+    },
+    {
+      "type": "fix",
+      "description": "a bug fix"
+    },
+    {
+      "type": "docs",
+      "description": "documentation only changes"
+    },
+    {
+      "type": "style",
+      "description": "changes that do not affect the meaning of the code"
+    },
+    {
+      "type": "refactor",
+      "description": "a code change that neither fixes a bug nor adds a feature"
+    },
+    {
+      "type": "perf",
+      "description": "a code change that improves performance"
+    },
+    {
+      "type": "test",
+      "description": "adding missing tests or correcting existing tests"
+    },
+    {
+      "type": "chore",
+      "description": "changes to the build process or auxiliary tools and libraries"
+    },
+    {
+      "type": "revert",
+      "description": "reverts a previous commit"
+    },
+    {
+      "type": "ci",
+      "description": "changes to our CI configuration files and scripts"
+    },
+    {
+      "type": "build",
+      "description": "changes that affect the build system or external dependencies"
+    }
+  ]
+}
