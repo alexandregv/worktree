@@ -24,6 +24,7 @@ Creating a shell function is **required** to allow `worktree` changing the curre
 Add this function at the end of your `~/.bashrc`, `~/.zshrc`, etc:
 
 ```bash
+# https://github.com/alexandregv/worktree#setup
 function wt() {
   output=$(worktree)
   if [[ $? == 0 ]] && [[ "$output" == /* ]]; then
