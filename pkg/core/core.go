@@ -20,8 +20,18 @@ func OpenTUI() {
 		os.Exit(1)
 	}
 
+	// Capture the tabbed content as an array of strings
+	strList := git.BuildWorktreeList(worktrees, true)
+	arrayList := []string{}
+	for _, line := range strings.Split(strList, "\n") {
+		if string(line) == "" {
+			continue
+		}
+		arrayList = append(arrayList, line)
+	}
+
 	// Init fzf options with defaults + our custom values
-	fzfOptions, err := fzf.InitFzfOptions(git.BuildWorktreeList(worktrees))
+	fzfOptions, err := fzf.InitFzfOptions(arrayList)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "worktree: Could not initalize fzf options: %s\n", err.Error())
 		os.Exit(fzfLib.ExitError)

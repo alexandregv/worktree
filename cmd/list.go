@@ -1,11 +1,8 @@
 package cmd
 
 import (
-	"bytes"
 	"fmt"
 	"os"
-	"strings"
-	"text/tabwriter"
 
 	"github.com/alexandregv/worktree/pkg/git"
 	"github.com/spf13/cobra"
@@ -23,30 +20,7 @@ var listCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		// Capture the tabbed output in a buffer
-		var buf bytes.Buffer
-		writer := tabwriter.NewWriter(&buf, 0, 0, 4, ' ', 0)
-
-		// Loop through worktrees and write their formatted output
-		for _, wt := range worktrees {
-			path := strings.Replace(wt.Path, os.Getenv("HOME"), "$HOME", -1)
-
-			var str string
-			if wt.Bare {
-				str = fmt.Sprintf("📁 %s\t🗳️ (bare)", path)
-			} else {
-				str = fmt.Sprintf("📁 %s\t🔗 %s\t🔀 %s", path, wt.Head[:7], strings.Replace(wt.Branch, "refs/heads/", "", -1))
-			}
-			if wt.Locked {
-				str += "\t🔒" + wt.LockedReason
-			}
-			fmt.Fprintln(writer, str)
-		}
-
-		// Flush the writer to write the data into the buffer
-		writer.Flush()
-
-		fmt.Println(buf.String())
+		fmt.Println(git.BuildWorktreeList(worktrees, false))
 	},
 }
 

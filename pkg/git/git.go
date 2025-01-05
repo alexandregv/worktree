@@ -20,39 +20,38 @@ type Worktree struct {
 	LockedReason string
 }
 
-func BuildWorktreeList(worktrees []*Worktree) (list []string) {
-	// Capture the tabbed output in a buffer
+// BuildWorktreeList formats a tabulated worktree list, with emojis and optional indexes
+func BuildWorktreeList(worktrees []*Worktree, withIndexes bool) (list string) {
+	var sb strings.Builder
 	var buf bytes.Buffer
 	writer := tabwriter.NewWriter(&buf, 0, 0, 4, ' ', 0)
 
-	// Loop through worktrees and write their formatted output
 	for i, wt := range worktrees {
 		path := strings.Replace(wt.Path, os.Getenv("HOME"), "$HOME", -1)
 
-		var str string
+		if withIndexes {
+			sb.WriteString(fmt.Sprintf("%d: ", i))
+		}
+
+		sb.WriteString(fmt.Sprintf("📁 %s\t", path))
+
 		if wt.Bare {
-			str = fmt.Sprintf("%d: 📁 %s\t🗳️ (bare)", i, path)
+			sb.WriteString("🗳️ (bare)\t")
 		} else {
-			str = fmt.Sprintf("%d: 📁 %s\t🔗 %s\t🔀 %s", i, path, wt.Head[:7], strings.Replace(wt.Branch, "refs/heads/", "", -1))
+			sb.WriteString(fmt.Sprintf("🔗 %s\t🔀 %s\t", wt.Head[:7], strings.Replace(wt.Branch, "refs/heads/", "", -1)))
 		}
+
 		if wt.Locked {
-			str += "\t🔒" + wt.LockedReason
+			sb.WriteString("\t🔒" + wt.LockedReason + "\t")
 		}
-		fmt.Fprintln(writer, str)
+
+		fmt.Fprintln(writer, sb.String())
+		sb.Reset()
 	}
 
-	// Flush the writer to write the data into the buffer
 	writer.Flush()
 
-	// Capture the tabbed content as an array of strings
-	lines := bytes.Split(buf.Bytes(), []byte("\n"))
-	for _, line := range lines {
-		if string(line) == "" {
-			continue
-		}
-		list = append(list, string(line))
-	}
-	return list
+	return buf.String()
 }
 
 // ParseWorktrees parses the output of `git worktree list --porcelain -z` into Worktree structs.
