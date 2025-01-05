@@ -20,19 +20,61 @@ This will install `worktree` in `$GOBIN`, make sure this value is in your `$PATH
 
 ### Setup
 
-Creating a shell function is **required** to allow `worktree` changing the current directory (only your shell can do so).  
-Add this function at the end of your `~/.bashrc`, `~/.zshrc`, etc:
+Creating a shell function is **required** to allow `worktree` changing the current directory (only your shell can do so).
+
+<details>
+  <summary>Bash, Zsh</summary>
+
+Add this function in your `~/.bashrc` or `~/.zshrc`:
 
 ```sh
 # https://github.com/alexandregv/worktree#setup
 function wt() {
   output=$(worktree)
+  printf "$output\n"
   if [[ $? == 0 ]] && [[ "$output" == /* ]]; then
     cd "$output"
   fi
 }
-
 ```
+
+</details>
+
+<details>
+  <summary>Fish</summary>
+
+Add this function in your `~/.config/fish/config.fish`:
+
+```sh
+# https://github.com/alexandregv/worktree#setup
+function wt
+  set output (worktree)
+  printf "$output\n"
+  if string match -q '/*' $output
+    cd $output
+  end
+end
+```
+
+</details>
+
+<details>
+  <summary>Nu Shell</summary>
+
+Add this function in your `~/.config/nushell/config.nu`:
+
+```sh
+# https://github.com/alexandregv/worktree#setup
+def --env wt [] {
+  let cmd = (worktree | complete)
+  printf $cmd.stdout
+  if $cmd.exit_code == 0 and ($cmd.stdout | str starts-with "/") {
+    cd $cmd.stdout
+  }
+}
+```
+
+</details>
 
 Then source the file or run `exec $SHELL` to restart your shell.
 
