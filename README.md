@@ -12,7 +12,7 @@ Download from the [Releases page](https://github.com/alexandregv/worktree/releas
 
 Or, if you have `go` installed:
 
-```bash
+```sh
 go install github.com/alexandregv/worktree@latest
 ```
 
@@ -23,7 +23,7 @@ This will install `worktree` in `$GOBIN`, make sure this value is in your `$PATH
 Creating a shell function is **required** to allow `worktree` changing the current directory (only your shell can do so).  
 Add this function at the end of your `~/.bashrc`, `~/.zshrc`, etc:
 
-```bash
+```sh
 # https://github.com/alexandregv/worktree#setup
 function wt() {
   output=$(worktree)
@@ -38,7 +38,7 @@ Then source the file or run `exec $SHELL` to restart your shell.
 
 ### Usage
 
-```bash
+```sh
 wt help    ## Help
 wt clone   ## Clone a repository, following the `.bare` + worktrees convention
 wt list    ## List worktrees
