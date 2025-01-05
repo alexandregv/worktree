@@ -87,14 +87,12 @@ Then source the file or run `exec nu` to restart your shell.
 ### Usage
 
 ```sh
-wt help    ## Help
-wt clone   ## Clone a repository, following the `.bare` + worktrees convention
-wt list    ## List worktrees
-wt <name>  ## Quickly switch to a named worktree
-wt         ## Chose a worktree via TUI and switch to it
+wt help          ## Help
+wt               ## Chose a worktree via TUI and switch to it
+wt list          ## List worktrees
+wt switch <name> ## Quickly switch to a named worktree
+wt clone  <link> ## Clone a repository, following the `.bare` + worktrees convention
 ```
-
-If a local worktree has the same name than a wt command, use `wt -- <name>` instead of `wt <name>` to quickly switch to it.
 
 ### FAQ
 
