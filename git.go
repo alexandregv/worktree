@@ -10,12 +10,13 @@ import (
 
 // Worktree represents a Git worktree with its attributes.
 type Worktree struct {
-	Path     string
-	Branch   string
-	Head     string
-	Bare     bool
-	Detached bool
-	Locked   bool
+	Path         string
+	Branch       string
+	Head         string
+	Bare         bool
+	Detached     bool
+	Locked       bool
+	LockedReason string
 }
 
 func BuildWorktreeList(worktrees []*Worktree) (list []string) {
@@ -33,6 +34,7 @@ func BuildWorktreeList(worktrees []*Worktree) (list []string) {
 		}
 		if wt.Locked {
 			str += "\t🔒 locked"
+			str += ": " + wt.LockedReason
 		}
 		fmt.Fprintln(writer, str)
 	}
@@ -77,6 +79,7 @@ func ParseWorktrees(input string) ([]*Worktree, error) {
 				currentWorktree.Detached = true
 			case strings.HasPrefix(line, "locked"):
 				currentWorktree.Locked = true
+				currentWorktree.LockedReason = line[len("locked "):]
 			case strings.HasPrefix(line, "HEAD "):
 				currentWorktree.Head = line[len("HEAD "):]
 			case strings.HasPrefix(line, "branch "):
