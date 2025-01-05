@@ -18,7 +18,7 @@ func InitFzfOptions(inputs []string) (options *fzf.Options, err error) {
 			// Preview window with git log on the right
 			// sh -c '' is used to expand $HOME
 			"--preview=sh -c \"git -C {3} log --color=always --oneline --graph --decorate --all -n20\"",
-			"--preview-window=right,45%",
+			"--preview-window=right,45%,<90(bottom,45%)",
 
 			// Theme: Catppuccin Macchiato (https://github.com/catppuccin/fzf)
 			"--color=bg+:#363a4f,bg:#24273a,spinner:#f4dbd6,hl:#ed8796",
