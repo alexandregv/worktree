@@ -20,7 +20,7 @@ var listCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		fmt.Println(git.BuildWorktreeList(worktrees, false))
+		fmt.Println(git.BuildWorktreeList(worktrees, false, "~"))
 	},
 }
 

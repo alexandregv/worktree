@@ -21,7 +21,7 @@ func OpenTUI() {
 	}
 
 	// Capture the tabbed content as an array of strings
-	strList := git.BuildWorktreeList(worktrees, true)
+	strList := git.BuildWorktreeList(worktrees, true, "$HOME")
 	arrayList := []string{}
 	for _, line := range strings.Split(strList, "\n") {
 		if string(line) == "" {

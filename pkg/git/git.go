@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 	"text/tabwriter"
 )
@@ -21,28 +22,40 @@ type Worktree struct {
 }
 
 // BuildWorktreeList formats a tabulated worktree list, with emojis and optional indexes
-func BuildWorktreeList(worktrees []*Worktree, withIndexes bool) (list string) {
+func BuildWorktreeList(worktrees []*Worktree, withIndexes bool, replaceHome string) (list string) {
 	var sb strings.Builder
 	var buf bytes.Buffer
 	writer := tabwriter.NewWriter(&buf, 0, 0, 4, ' ', 0)
 
 	for i, wt := range worktrees {
-		path := strings.Replace(wt.Path, os.Getenv("HOME"), "$HOME", -1)
-
 		if withIndexes {
-			sb.WriteString(fmt.Sprintf("%d: ", i))
+			sb.WriteString(strconv.Itoa(i))
+			sb.WriteString(": ")
 		}
 
-		sb.WriteString(fmt.Sprintf("📁 %s\t", path))
+		sb.WriteString("📁 ")
+		if replaceHome != "" {
+			sb.WriteString(strings.Replace(wt.Path, os.Getenv("HOME"), replaceHome, -1))
+		} else {
+			sb.WriteString(wt.Path)
+		}
+		sb.WriteString("\t")
 
 		if wt.Bare {
 			sb.WriteString("🗳️ (bare)\t")
 		} else {
-			sb.WriteString(fmt.Sprintf("🔗 %s\t🔀 %s\t", wt.Head[:7], strings.Replace(wt.Branch, "refs/heads/", "", -1)))
+			sb.WriteString("🔗 ")
+			sb.WriteString(wt.Head[:7])
+			sb.WriteString("\t🔀 ")
+			sb.WriteString(wt.Branch[len("refs/heads/"):]) // Slice to remove the "refs/heads/" prefix
+			sb.WriteString("\t")
+
 		}
 
 		if wt.Locked {
-			sb.WriteString("\t🔒" + wt.LockedReason + "\t")
+			sb.WriteString("\t🔒 ")
+			sb.WriteString(wt.LockedReason)
+			sb.WriteString("\t")
 		}
 
 		fmt.Fprintln(writer, sb.String())
@@ -50,7 +63,6 @@ func BuildWorktreeList(worktrees []*Worktree, withIndexes bool) (list string) {
 	}
 
 	writer.Flush()
-
 	return buf.String()
 }
 
