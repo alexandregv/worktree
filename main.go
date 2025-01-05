@@ -25,7 +25,7 @@ func main() {
 			"--prompt=worktree: ",
 			"--with-nth=2,3,4,5",
 			"--bind=space:jump",
-			"--jump-labels=0123456789",
+			"--jump-labels=0123456789;:,<.>/?'\"!@#$%^&*",
 		},
 	)
 	if err != nil {
@@ -33,6 +33,7 @@ func main() {
 		os.Exit(fzf.ExitError)
 	}
 
+	// Capture fzf output, get corresponding worktree by index
 	go func() {
 		out := <-fzfOptions.Output
 		i, err := strconv.Atoi(strings.Split(out, ":")[0])
