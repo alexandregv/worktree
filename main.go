@@ -38,6 +38,7 @@ func main() {
 		out := <-fzfOptions.Output
 		i, err := strconv.Atoi(strings.Split(out, ":")[0])
 		if err != nil {
+			fmt.Fprintf(os.Stderr, "worktree: Error parsing fzf output: %s\n", err.Error())
 			os.Exit(1)
 		}
 		fmt.Println(worktrees[i].Path)
