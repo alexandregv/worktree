@@ -21,18 +21,18 @@ type Worktree struct {
 func BuildWorktreeList(worktrees []*Worktree) (list []string) {
 	// Capture the tabbed output in a buffer
 	var buf bytes.Buffer
-	writer := tabwriter.NewWriter(&buf, 0, 0, 2, ' ', 0)
+	writer := tabwriter.NewWriter(&buf, 0, 0, 4, ' ', 0)
 
 	// Loop through worktrees and write their formatted output
 	for i, wt := range worktrees {
 		var str string
 		if wt.Bare {
-			str = fmt.Sprintf("%d: %s (bare)", i, wt.Path)
+			str = fmt.Sprintf("%d: 📁 %s\t🗳️ (bare)", i, wt.Path)
 		} else {
-			str = fmt.Sprintf("%d: %s\t[%s]\t%s", i, wt.Path, wt.Head[:7], wt.Branch)
+			str = fmt.Sprintf("%d: 📁 %s\t🔗 %s\t🔀 %s", i, wt.Path, wt.Head[:7], wt.Branch)
 		}
 		if wt.Locked {
-			str += "\tlocked"
+			str += "\t🔒 locked"
 		}
 		fmt.Fprintln(writer, str)
 	}

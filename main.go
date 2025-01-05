@@ -23,7 +23,7 @@ func main() {
 		[]string{
 			"--height=40%",
 			"--prompt=worktree: ",
-			"--with-nth=2,3,4,5",
+			"--with-nth=2..",
 			"--bind=space:jump",
 			"--jump-labels=0123456789;:,<.>/?'\"!@#$%^&*",
 		},
