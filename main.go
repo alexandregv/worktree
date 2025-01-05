@@ -26,6 +26,7 @@ func main() {
 			"--with-nth=2..",
 			"--bind=space:jump",
 			"--jump-labels=0123456789;:,<.>/?'\"!@#$%^&*",
+			"--preview=git -C {3} log --color=always --oneline --graph --decorate --all -n10",
 		},
 	)
 	if err != nil {
