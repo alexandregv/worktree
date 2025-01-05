@@ -18,7 +18,7 @@ type Worktree struct {
 	Locked   bool
 }
 
-func BuildTabulatedList(worktrees []*Worktree) (list []string) {
+func BuildWorktreeList(worktrees []*Worktree) (list []string) {
 	// Capture the tabbed output in a buffer
 	var buf bytes.Buffer
 	writer := tabwriter.NewWriter(&buf, 0, 0, 2, ' ', 0)

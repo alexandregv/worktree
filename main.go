@@ -19,7 +19,7 @@ func main() {
 
 	// Init fzf options with defaults + our custom values
 	fzfOptions, err := initFzfOptions(
-		BuildTabulatedList(worktrees),
+		BuildWorktreeList(worktrees),
 		[]string{
 			"--height=40%",
 			"--prompt=worktree: ",
