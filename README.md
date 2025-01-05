@@ -40,6 +40,8 @@ function wt() {
 }
 ```
 
+Then source the file or run `exec bash` / `exec zsh` to restart your shell.
+
 </details>
 
 <details>
@@ -57,6 +59,8 @@ function wt
   end
 end
 ```
+
+Then source the file or run `exec fish` to restart your shell.
 
 </details>
 
@@ -76,9 +80,9 @@ def --env wt [] {
 }
 ```
 
-</details>
+Then source the file or run `exec nu` to restart your shell.
 
-Then source the file or run `exec $SHELL` to restart your shell.
+</details>
 
 ### Usage
 
