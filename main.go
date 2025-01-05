@@ -26,7 +26,7 @@ func main() {
 			"--with-nth=2..",
 			"--bind=space:jump",
 			"--jump-labels=0123456789;:,<.>/?'\"!@#$%^&*",
-			"--preview=sh -c \"git -C {3} log --color=always --oneline --graph --decorate --all -n10\"",
+			"--preview=sh -c \"git -C {3} log --color=always --oneline --graph --decorate --all -n20\"",
 			"--preview-window=right,45%",
 		},
 	)
