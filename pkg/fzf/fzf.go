@@ -1,8 +1,8 @@
-package main
+package fzf
 
-import fzf "github.com/junegunn/fzf/src"
+import fzfLib "github.com/junegunn/fzf/src"
 
-func InitFzfOptions(inputs []string) (options *fzf.Options, err error) {
+func InitFzfOptions(inputs []string) (options *fzfLib.Options, err error) {
 	options, err = fromDefaults(
 		inputs,
 		[]string{
@@ -30,8 +30,8 @@ func InitFzfOptions(inputs []string) (options *fzf.Options, err error) {
 	return options, err
 }
 
-func fromDefaults(inputs []string, customOptions []string) (options *fzf.Options, err error) {
-	options, err = fzf.ParseOptions(true, customOptions)
+func fromDefaults(inputs []string, customOptions []string) (options *fzfLib.Options, err error) {
+	options, err = fzfLib.ParseOptions(true, customOptions)
 	if err != nil {
 		return nil, err
 	}
