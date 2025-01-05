@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"os/exec"
 	"strings"
 	"text/tabwriter"
@@ -28,9 +29,9 @@ func BuildWorktreeList(worktrees []*Worktree) (list []string) {
 	for i, wt := range worktrees {
 		var str string
 		if wt.Bare {
-			str = fmt.Sprintf("%d: 📁 %s\t🗳️ (bare)", i, wt.Path)
+			str = fmt.Sprintf("%d: 📁 %s\t🗳️ (bare)", i, strings.Replace(wt.Path, os.Getenv("HOME"), "$HOME", -1))
 		} else {
-			str = fmt.Sprintf("%d: 📁 %s\t🔗 %s\t🔀 %s", i, wt.Path, wt.Head[:7], wt.Branch)
+			str = fmt.Sprintf("%d: 📁 %s\t🔗 %s\t🔀 %s", i, strings.Replace(wt.Path, os.Getenv("HOME"), "$HOME", -1), wt.Head[:7], wt.Branch)
 		}
 		if wt.Locked {
 			str += "\t🔒"
