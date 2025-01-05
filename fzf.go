@@ -9,6 +9,7 @@ func InitFzfOptions(inputs []string) (options *fzf.Options, err error) {
 			"--height=40%",
 			"--prompt=worktree: ",
 			"--with-nth=2..",
+			"--layout=reverse",
 
 			// Jump to a line with Space + <n>
 			"--bind=space:jump",
