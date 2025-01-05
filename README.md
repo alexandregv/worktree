@@ -1,10 +1,12 @@
 # worktree
 
-Git worktrees utility
+CLI utility to easily navigate between Git worktrees, list them, clone a multiple-worktrees-enabled repo, etc.
 
 ### Dependencies
 
-There are no dependencies, not either `git` or `fzf`.
+Only `git` is required.
+
+`worktree` uses `fzf` under the hood, but it's builtin (Go library), so you don't need it installed.
 
 ### Download
 
