@@ -1,97 +1,50 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"os"
-	"reflect"
+	"text/tabwriter"
 
 	fzf "github.com/junegunn/fzf/src"
 	fzfProtector "github.com/junegunn/fzf/src/protector"
-
-	git "github.com/go-git/go-git/v5"
 )
 
-func getGitRepo(path string) (repo *git.Repository, err error) {
-	cwd, err := os.Getwd()
-	if err != nil {
-		return nil, err
-	}
+func buildList(worktrees []*Worktree) (list []string) {
+	// Capture the tabbed output in a buffer
+	var buf bytes.Buffer
+	writer := tabwriter.NewWriter(&buf, 0, 0, 2, ' ', 0)
 
-	repo, err = git.PlainOpenWithOptions(cwd, &git.PlainOpenOptions{DetectDotGit: true, EnableDotGitCommonDir: true})
-	if err != nil {
-		return nil, err
-	}
-	// godump.Dump(repo)
-
-	return repo, err
-}
-
-func getRootRepo(repo *git.Repository) (commonDirRepo *git.Repository, err error) {
-	commonDotGitPath := fmt.Sprintf("%+v\n",
-		reflect.ValueOf(repo.Storer).
-			Elem().FieldByName("fs").
-			Elem().Elem().FieldByName("commonDotGitFs").
-			Elem().Elem().FieldByName("base"),
-	)
-	// fmt.Println(commonDotGitPath)
-	// fmt.Println(commonDotGitPath[:len(commonDotGitPath)-7])
-
-	commonDirRepo, err = getGitRepo(commonDotGitPath[:len(commonDotGitPath)-7])
-	return commonDirRepo, err
-}
-
-func getGitWorktrees(repo *git.Repository) (paths []string, err error) {
-	worktrees, err := repo.Worktrees()
-
-	// Keep only paths as strings
-	paths = []string{}
-	for _, wt := range worktrees {
-		paths = append(paths, fmt.Sprintf("%s", reflect.ValueOf(wt.Filesystem).Elem().FieldByName("base")))
-		fmt.Println(fmt.Sprintf("%s", reflect.ValueOf(wt.Filesystem).Elem().FieldByName("base")))
-	}
-
-	return paths, err
-}
-
-func initFzfOptions(inputs []string, customOptions []string) (options *fzf.Options, err error) {
-	options, err = fzf.ParseOptions(true, customOptions)
-	if err != nil {
-		return nil, err
-	}
-
-	options.Input = make(chan string)
-
-	go func() {
-		defer close(options.Input)
-
-		for _, input := range inputs {
-			options.Input <- input
+	// Loop through worktrees and write their formatted output
+	for i, wt := range worktrees {
+		var str string
+		if wt.Bare {
+			str = fmt.Sprintf("%d: %s (bare)", i, wt.Path)
+		} else {
+			str = fmt.Sprintf("%d: %s\t[%s]\t%s", i, wt.Path, wt.Head[:7], wt.Branch)
 		}
-	}()
+		if wt.Locked {
+			str += "\tlocked"
+		}
+		fmt.Fprintln(writer, str)
+	}
 
-	return options, err
+	// Flush the writer to write the data into the buffer
+	writer.Flush()
+
+	// Capture the tabbed content as an array of strings
+	lines := bytes.Split(buf.Bytes(), []byte("\n"))
+	for _, line := range lines {
+		if string(line) == "" {
+			continue
+		}
+		list = append(list, string(line))
+	}
+	return list
 }
 
 func main() {
-	cwd, err := os.Getwd()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "worktree: Could not get current working directory: %s\n", err.Error())
-		os.Exit(1)
-	}
-
-	repo, err := getGitRepo(cwd)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "worktree: Could not get Git repository: %s\n", err.Error())
-		os.Exit(1)
-	}
-
-	rrepo, err := getRootRepo(repo)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "worktree: Could not get root Git repository: %s\n", err.Error())
-		os.Exit(1)
-	}
-
-	worktrees, err := getGitWorktrees(rrepo)
+	worktrees, err := GitWorktreeList()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "worktree: Could not get Git worktrees: %s\n", err.Error())
 		os.Exit(1)
@@ -99,10 +52,12 @@ func main() {
 
 	// Init fzf options with defaults + our custom values
 	fzfOptions, err := initFzfOptions(
-		worktrees,
+		buildList(worktrees),
 		[]string{
-			"--height=10",
+			"--height=40%",
 			"--prompt=worktree: ",
+			"--tac",
+			// "--with-nth=2,3,4,5",
 		},
 	)
 	if err != nil {
@@ -114,7 +69,7 @@ func main() {
 	fzfProtector.Protect()
 	exitCode, err := fzf.Run(fzfOptions)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "worktree: Could not start fzf: %s\n", err.Error())
+		fmt.Fprintf(os.Stderr, "worktree: Could not run fzf: %s\n", err.Error())
 		os.Exit(exitCode)
 	}
 }
