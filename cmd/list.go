@@ -29,11 +29,13 @@ var listCmd = &cobra.Command{
 
 		// Loop through worktrees and write their formatted output
 		for _, wt := range worktrees {
+			path := strings.Replace(wt.Path, os.Getenv("HOME"), "$HOME", -1)
+
 			var str string
 			if wt.Bare {
-				str = fmt.Sprintf("📁 %s\t🗳️ (bare)", strings.Replace(wt.Path, os.Getenv("HOME"), "~", -1))
+				str = fmt.Sprintf("📁 %s\t🗳️ (bare)", path)
 			} else {
-				str = fmt.Sprintf("📁 %s\t🔗 %s\t🔀 %s", strings.Replace(wt.Path, os.Getenv("HOME"), "~", -1), wt.Head[:7], wt.Branch)
+				str = fmt.Sprintf("📁 %s\t🔗 %s\t🔀 %s", path, wt.Head[:7], strings.Replace(wt.Branch, "refs/heads/", "", -1))
 			}
 			if wt.Locked {
 				str += "\t🔒" + wt.LockedReason

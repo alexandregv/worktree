@@ -27,11 +27,13 @@ func BuildWorktreeList(worktrees []*Worktree) (list []string) {
 
 	// Loop through worktrees and write their formatted output
 	for i, wt := range worktrees {
+		path := strings.Replace(wt.Path, os.Getenv("HOME"), "$HOME", -1)
+
 		var str string
 		if wt.Bare {
-			str = fmt.Sprintf("%d: 📁 %s\t🗳️ (bare)", i, strings.Replace(wt.Path, os.Getenv("HOME"), "$HOME", -1))
+			str = fmt.Sprintf("%d: 📁 %s\t🗳️ (bare)", i, path)
 		} else {
-			str = fmt.Sprintf("%d: 📁 %s\t🔗 %s\t🔀 %s", i, strings.Replace(wt.Path, os.Getenv("HOME"), "$HOME", -1), wt.Head[:7], wt.Branch)
+			str = fmt.Sprintf("%d: 📁 %s\t🔗 %s\t🔀 %s", i, path, wt.Head[:7], strings.Replace(wt.Branch, "refs/heads/", "", -1))
 		}
 		if wt.Locked {
 			str += "\t🔒" + wt.LockedReason
