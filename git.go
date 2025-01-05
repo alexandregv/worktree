@@ -34,7 +34,7 @@ func BuildWorktreeList(worktrees []*Worktree) (list []string) {
 			str = fmt.Sprintf("%d: 📁 %s\t🔗 %s\t🔀 %s", i, strings.Replace(wt.Path, os.Getenv("HOME"), "$HOME", -1), wt.Head[:7], wt.Branch)
 		}
 		if wt.Locked {
-			str += "\t🔒"
+			str += "\t🔒" + wt.LockedReason
 		}
 		fmt.Fprintln(writer, str)
 	}
@@ -79,7 +79,7 @@ func ParseWorktrees(input string) ([]*Worktree, error) {
 				currentWorktree.Detached = true
 			case strings.HasPrefix(line, "locked"):
 				currentWorktree.Locked = true
-				currentWorktree.LockedReason = line[len("locked "):]
+				currentWorktree.LockedReason = line[len("locked"):]
 			case strings.HasPrefix(line, "HEAD "):
 				currentWorktree.Head = line[len("HEAD "):]
 			case strings.HasPrefix(line, "branch "):
