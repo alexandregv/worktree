@@ -66,6 +66,15 @@ func main() {
 		os.Exit(fzf.ExitError)
 	}
 
+	go func() {
+		out := <-fzfOptions.Output
+		i, err := strconv.Atoi(strings.Split(out, ":")[0])
+		if err != nil {
+			os.Exit(1)
+		}
+		fmt.Println(worktrees[i].Path)
+	}()
+
 	// Run fzf (with BSD protector)
 	fzfProtector.Protect()
 	exitCode, err := fzf.Run(fzfOptions)

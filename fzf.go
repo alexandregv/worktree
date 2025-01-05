@@ -9,6 +9,7 @@ func initFzfOptions(inputs []string, customOptions []string) (options *fzf.Optio
 	}
 
 	options.Input = make(chan string)
+	options.Output = make(chan string)
 
 	go func() {
 		defer close(options.Input)
