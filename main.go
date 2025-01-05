@@ -27,6 +27,7 @@ func main() {
 			"--bind=space:jump",
 			"--jump-labels=0123456789;:,<.>/?'\"!@#$%^&*",
 			"--preview=git -C {3} log --color=always --oneline --graph --decorate --all -n10",
+			"--preview-window=right,45%",
 		},
 	)
 	if err != nil {

@@ -33,8 +33,7 @@ func BuildWorktreeList(worktrees []*Worktree) (list []string) {
 			str = fmt.Sprintf("%d: 📁 %s\t🔗 %s\t🔀 %s", i, wt.Path, wt.Head[:7], wt.Branch)
 		}
 		if wt.Locked {
-			str += "\t🔒 locked"
-			str += ": " + wt.LockedReason
+			str += "\t🔒"
 		}
 		fmt.Fprintln(writer, str)
 	}
