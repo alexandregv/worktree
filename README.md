@@ -95,6 +95,11 @@ wt switch <name> ## Quickly switch to a named worktree
 wt clone  <link> ## Clone a repository, following the `.bare` + worktrees convention
 ```
 
+### Building
+
+Run `make build` or just `go build .` at the root of the directory.  
+See `make help` for more commands.
+
 ### FAQ
 
 1. Do I need `fzf` installed?  
