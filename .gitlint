@@ -1,0 +1,19 @@
+# Edit this file as you like.
+#
+# All these sections are optional. Each section with the exception of [general] represents
+# one rule and each key in it is an option for that specific rule.
+#
+# Rules and sections can be referenced by their full name or by id. For example
+# section "[body-max-line-length]" could also be written as "[B1]". Full section names are
+# used in here for clarity.
+
+# Generate a sample config file with `gitlint generate-config`
+
+# Rules list: https://jorisroovers.com/gitlint/latest/rules/builtin_rules/
+
+[general]
+ignore = B6,body-is-missing, T5,title-must-not-contain-word
+# We allow commits without body (title is enough) and we allow commits with the word "WIP" in the title
+
+contrib = CT1,contrib-title-conventional-commits
+# We require conventional commits. See https://www.conventionalcommits.org/en/v1.0.0/#summary
