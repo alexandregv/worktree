@@ -37,10 +37,10 @@ Add this function in your `~/.bashrc` or `~/.zshrc`:
 # https://github.com/alexandregv/worktree#setup
 function wt() {
   output=$(worktree "$@")
-  printf "$output\n"
   if [[ $? == 0 ]] && [[ "$output" == /* ]]; then
     cd "$output"
   fi
+  printf "$output\n"
 }
 ```
 
@@ -57,10 +57,10 @@ Add this function in your `~/.config/fish/config.fish`:
 # https://github.com/alexandregv/worktree#setup
 function wt
   set output (worktree $argv)
-  printf "$output\n"
   if string match -q '/*' $output
     cd $output
   end
+  printf "$output\n"
 end
 ```
 
@@ -77,10 +77,10 @@ Add this function in your `~/.config/nushell/config.nu`:
 # https://github.com/alexandregv/worktree#setup
 def --env --wrapped wt [...args] {
   let cmd = (worktree ...$args | complete)
-  printf $cmd.stdout
   if $cmd.exit_code == 0 and ($cmd.stdout | str starts-with "/") {
     cd $cmd.stdout
   }
+  printf $cmd.stdout
 }
 ```
 
