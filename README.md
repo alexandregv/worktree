@@ -6,7 +6,8 @@ CLI utility to easily navigate between Git worktrees, list them, clone a multipl
 
 Only `git` is required.
 
-`worktree` uses `fzf` under the hood, but it's builtin (Go library), so you don't need it installed.
+> [!NOTE]  
+> `worktree` uses `fzf` under the hood, but it's built in (Go library), so you don't need it installed.
 
 ### Download
 
