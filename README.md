@@ -57,7 +57,7 @@ Add this function in your `~/.config/fish/config.fish`:
 # https://github.com/alexandregv/worktree#setup
 function wt
   set output (worktree $argv)
-  if string match -q '/*' $output
+  if test $status -eq 0; and string match -q '/*' $output
     cd $output
   end
   printf "$output\n"
