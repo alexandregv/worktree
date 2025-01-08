@@ -5,6 +5,8 @@ Familar with Git Worktrees? No? Well, `worktree` is here to make it easy!
 `worktree` is a CLI utility to easily navigate between [Git Worktrees](https://git-scm.com/docs/git-worktree), list them and clone a multiple-worktrees-enabled repo.  
 That's it. No overkill feature, no you-will-never-be-able-to-work-without-it-anymore feature. Just a bit of handiness.
 
+![Demo GIF](/assets/demo.gif)
+
 ### Dependencies
 
 Only `git` is required.
