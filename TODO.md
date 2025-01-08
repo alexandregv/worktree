@@ -20,7 +20,8 @@
 ## Documentation
 
 - [x] README
-  - [ ] Demo
+  - [x] Demo
+  - [ ] Badges
   - [x] Download
   - [x] Setup for main shells
   - [x] Usage
