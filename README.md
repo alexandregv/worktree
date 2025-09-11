@@ -97,7 +97,7 @@ wt help          ## Help
 wt               ## Chose a worktree via TUI and switch to it
 wt list          ## List worktrees
 wt switch <name> ## Quickly switch to a named worktree
-wt clone  <link> ## Clone a repository, following the `.bare` + worktrees convention
+wt clone  <link> ## Clone a repository, with worktrees at the root folder
 ```
 
 ### Building

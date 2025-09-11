@@ -15,8 +15,16 @@ import (
 var cloneCmd = &cobra.Command{
 	Use:   "clone",
 	Short: "Clone a multi-worktrees repository",
-	Long:  `Clone a repository (as bare) and its branches as local worktrees`,
-	Args:  cobra.RangeArgs(1, 2),
+	Long: `
+	Clone a repository (as bare) and its branches as local worktrees.
+
+	This is the equivalent of running:
+	  git clone --no-checkout <url> <path>
+	  cd <path>
+	  git config core.bare true
+	  git worktree add $(basename <branch>) -B <branch> origin/<branch>  # for each branch if --all
+	`,
+	Args: cobra.RangeArgs(1, 2),
 	Run: func(cmd *cobra.Command, args []string) {
 		flagAll, err := cmd.Flags().GetBool("all")
 		if err != nil {
