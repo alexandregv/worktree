@@ -43,6 +43,8 @@ func BuildWorktreeList(worktrees []*Worktree, withIndexes bool, replaceHome stri
 
 		if wt.Bare {
 			sb.WriteString("🗳️ (bare)\t")
+		} else if wt.Detached {
+			sb.WriteString("🔎 (detached)\t")
 		} else {
 			sb.WriteString("🔗 ")
 			sb.WriteString(wt.Head[:7])
