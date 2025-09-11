@@ -7,6 +7,7 @@
 - [x] Choose worktree via TUI (`wt` command)
 - [ ] Clone multiple-worktrees-enabled repo (`clone` subcommand)
 - [x] Preview git log in TUI
+- [ ] `wt switch -` to switch back to last used worktree
 - [ ] Custom preview command
 - [ ] Theme
 - [ ] Configuration file
