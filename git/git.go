@@ -47,7 +47,7 @@ func BuildWorktreeList(worktrees []*Worktree, withIndexes bool, replaceHome stri
 			sb.WriteString("🔗 ")
 			sb.WriteString(wt.Head[:7])
 			sb.WriteString("\t🔀 ")
-			sb.WriteString(wt.Branch[len("refs/heads/"):]) // Slice to remove the "refs/heads/" prefix
+			sb.WriteString(strings.TrimPrefix(wt.Branch, "refs/heads/"))
 			sb.WriteString("\t")
 
 		}
