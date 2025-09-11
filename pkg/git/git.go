@@ -107,15 +107,64 @@ func ParseWorktrees(input string) ([]*Worktree, error) {
 
 // GitWorktreeList runs `git worktree list --porcelain -z` and parses the output.
 func GitWorktreeList() ([]*Worktree, error) {
-	cmd := exec.Command("git", "worktree", "list", "--porcelain", "-z")
-	var out bytes.Buffer
-	cmd.Stdout = &out
+	out, err := CommandOutput("worktree", "list", "--porcelain", "-z")
+	if err != nil {
+		return nil, err
+	}
+
+	return ParseWorktrees(out.String())
+}
+
+// NewWorktree adds a new worktree.
+func NewWorktree(branch string) error {
+	return Command("worktree", "add", branch, "-B", branch, "origin/"+branch)
+}
+
+// SetBare changes the core.bare config value.
+func SetBare(bare bool) error {
+	return Command("config", "core.bare", "true")
+}
+
+// Clone clones a repository
+func Clone(url string, args ...string) error {
+	fullArgs := []string{"clone", url}
+	for _, arg := range args {
+		fullArgs = append(fullArgs, arg)
+	}
+
+	return Command(fullArgs...)
+}
+
+// Refs returns specified refs, using `git for-each-ref --format='%(refname:short)'`.
+func Refs(refs string) (heads string, err error) {
+	out, err := CommandOutput("for-each-ref", "--format=%(refname:short)", "refs/"+refs)
+	return out.String(), err
+}
+
+// Command executes the specified git command.
+// Stdout and Stderr are redirected to os.Stdout and os.Stderr.
+func Command(args ...string) error {
+	cmd := exec.Command("git", args...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 
 	err := cmd.Run()
 	if err != nil {
-		return nil, fmt.Errorf("failed to run git command: %w", err)
+		return fmt.Errorf("failed to run git command `%s`: %w", cmd.String(), err.Error())
 	}
+	return nil
+}
 
-	output := out.String()
-	return ParseWorktrees(output)
+// CommandOutput executes the specified git command and returns its output.
+// Stderr is redirected to os.Stderr.
+func CommandOutput(args ...string) (out strings.Builder, err error) {
+	cmd := exec.Command("git", args...)
+	cmd.Stdout = &out
+	cmd.Stderr = os.Stderr
+
+	err = cmd.Run()
+	if err != nil {
+		return out, fmt.Errorf("failed to run git command `%s`: %w", cmd.String(), err.Error())
+	}
+	return out, nil
 }

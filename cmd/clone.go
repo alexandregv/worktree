@@ -4,9 +4,9 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"os/exec"
 	"strings"
 
+	"github.com/alexandregv/worktree/pkg/git"
 	"github.com/spf13/cobra"
 )
 
@@ -37,12 +37,9 @@ var cloneCmd = &cobra.Command{
 			path = splits[len(splits)-1]
 		}
 
-		shellCmd := exec.Command("git", "clone", "--no-checkout", repoURL, path)
-		shellCmd.Stdout = os.Stdout
-		shellCmd.Stderr = os.Stderr
-		err = shellCmd.Run()
+		err = git.Clone(repoURL, path, "--no-checkout")
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "worktree: Error running git command `%s`: %s\n", shellCmd.String(), err.Error())
+			fmt.Fprintf(os.Stderr, "worktree: Error cloning repositoru: %s\n", err.Error())
 			os.Exit(1)
 		}
 
@@ -52,27 +49,20 @@ var cloneCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		shellCmd = exec.Command("git", "config", "core.bare", "true")
-		shellCmd.Stdout = os.Stdout
-		shellCmd.Stderr = os.Stderr
-		err = shellCmd.Run()
+		err = git.SetBare(true)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "worktree: Error running git command `%s`: %s\n", shellCmd.String(), err.Error())
+			fmt.Fprintf(os.Stderr, "worktree: Error setting repository as bare: %s\n", err.Error())
 			os.Exit(1)
 		}
 
 		if flagAll {
-			var sb strings.Builder
-			shellCmd = exec.Command("git", "for-each-ref", "--format=%(refname:short)", "refs/remotes/origin")
-			shellCmd.Stdout = &sb
-			shellCmd.Stderr = os.Stderr
-			err = shellCmd.Run()
+			refs, err := git.Refs("remotes/origin")
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "worktree: Error running git command `%s`: %s\n", shellCmd.String(), err.Error())
+				fmt.Fprintf(os.Stderr, "worktree: Error listings refs/remotes/origin: %s\n", err.Error())
 				os.Exit(1)
 			}
 
-			scanner := bufio.NewScanner(strings.NewReader(sb.String()))
+			scanner := bufio.NewScanner(strings.NewReader(refs))
 			scanner.Split(bufio.ScanLines)
 			for scanner.Scan() {
 				splits := strings.SplitN(scanner.Text(), "origin/", 2)
@@ -81,37 +71,27 @@ var cloneCmd = &cobra.Command{
 				}
 				branch := splits[1]
 
-				shellCmd = exec.Command("git", "worktree", "add", branch, "-B", branch, "origin/"+branch)
-				shellCmd.Stdout = os.Stdout
-				shellCmd.Stderr = os.Stderr
-				err = shellCmd.Run()
+				err := git.NewWorktree(branch)
 				if err != nil {
-					fmt.Fprintf(os.Stderr, "worktree: Error running git command `%s`: %s\n", shellCmd.String(), err.Error())
+					fmt.Fprintf(os.Stderr, "worktree: Error adding worktree: %s\n", err.Error())
 					os.Exit(1)
 				}
 			}
 		} else {
-			var sb strings.Builder
-			shellCmd = exec.Command("git", "for-each-ref", "--format=%(refname:short)", "refs/heads")
-			shellCmd.Stdout = &sb
-			shellCmd.Stderr = os.Stderr
-			err = shellCmd.Run()
+			refs, err := git.Refs("heads")
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "worktree: Error running git command `%s`: %s\n", shellCmd.String(), err.Error())
+				fmt.Fprintf(os.Stderr, "worktree: Error listings refs/heads: %s\n", err.Error())
 				os.Exit(1)
 			}
 
-			scanner := bufio.NewScanner(strings.NewReader(sb.String()))
+			scanner := bufio.NewScanner(strings.NewReader(refs))
 			scanner.Split(bufio.ScanLines)
 			for scanner.Scan() {
 				defaultBranch := scanner.Text()
 
-				shellCmd = exec.Command("git", "worktree", "add", defaultBranch, "-B", defaultBranch, "origin/"+defaultBranch)
-				shellCmd.Stdout = os.Stdout
-				shellCmd.Stderr = os.Stderr
-				err = shellCmd.Run()
+				err := git.NewWorktree(defaultBranch)
 				if err != nil {
-					fmt.Fprintf(os.Stderr, "worktree: Error running git command `%s`: %s\n", shellCmd.String(), err.Error())
+					fmt.Fprintf(os.Stderr, "worktree: Error adding worktree: %s\n", err.Error())
 					os.Exit(1)
 				}
 			}
