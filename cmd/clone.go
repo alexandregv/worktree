@@ -91,27 +91,29 @@ var cloneCmd = &cobra.Command{
 				}
 			}
 		} else {
-			shellCmd = exec.Command("git", "remote", "show", "origin")
-			out, err := shellCmd.Output()
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "worktree: Error running git command `%s`: %s\n", shellCmd.String(), err.Error())
-				os.Exit(1)
-			}
-
-			splits := strings.SplitN(string(out), "HEAD branch: ", 2)
-			if len(splits) <= 1 {
-				fmt.Fprint(os.Stderr, "worktree: Could not determine default branch\n")
-				os.Exit(1)
-			}
-			defaultBranch := strings.Split(splits[1], "\n")[0]
-
-			shellCmd = exec.Command("git", "worktree", "add", defaultBranch, "-B", defaultBranch, "origin/"+defaultBranch)
-			shellCmd.Stdout = os.Stdout
+			var sb strings.Builder
+			shellCmd = exec.Command("git", "for-each-ref", "--format=%(refname:short)", "refs/heads")
+			shellCmd.Stdout = &sb
 			shellCmd.Stderr = os.Stderr
 			err = shellCmd.Run()
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "worktree: Error running git command `%s`: %s\n", shellCmd.String(), err.Error())
 				os.Exit(1)
+			}
+
+			scanner := bufio.NewScanner(strings.NewReader(sb.String()))
+			scanner.Split(bufio.ScanLines)
+			for scanner.Scan() {
+				defaultBranch := scanner.Text()
+
+				shellCmd = exec.Command("git", "worktree", "add", defaultBranch, "-B", defaultBranch, "origin/"+defaultBranch)
+				shellCmd.Stdout = os.Stdout
+				shellCmd.Stderr = os.Stderr
+				err = shellCmd.Run()
+				if err != nil {
+					fmt.Fprintf(os.Stderr, "worktree: Error running git command `%s`: %s\n", shellCmd.String(), err.Error())
+					os.Exit(1)
+				}
 			}
 		}
 	},
