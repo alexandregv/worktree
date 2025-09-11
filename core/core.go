@@ -6,11 +6,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/alexandregv/worktree/pkg/fzf"
-	"github.com/alexandregv/worktree/pkg/git"
-
 	fzfLib "github.com/junegunn/fzf/src"
 	fzfLibProtec "github.com/junegunn/fzf/src/protector"
+
+	"github.com/alexandregv/worktree/fzf"
+	"github.com/alexandregv/worktree/git"
 )
 
 func OpenTUI() {

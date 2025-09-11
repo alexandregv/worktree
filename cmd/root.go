@@ -3,7 +3,7 @@ package cmd
 import (
 	"os"
 
-	"github.com/alexandregv/worktree/pkg/core"
+	"github.com/alexandregv/worktree/core"
 	"github.com/spf13/cobra"
 )
 

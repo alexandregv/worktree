@@ -6,8 +6,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/alexandregv/worktree/pkg/git"
 	"github.com/spf13/cobra"
+
+	"github.com/alexandregv/worktree/git"
 )
 
 // cloneCmd represents the clone command
