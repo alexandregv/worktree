@@ -12,7 +12,7 @@ import (
 // listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:     "list",
-	Short:   "list worktrees",
+	Short:   "List worktrees",
 	Aliases: []string{"ls"},
 	Run: func(cmd *cobra.Command, args []string) {
 		worktrees, err := git.GitWorktreeList()

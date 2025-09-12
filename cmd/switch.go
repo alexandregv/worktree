@@ -14,7 +14,7 @@ import (
 // switchCmd represents the switch command
 var switchCmd = &cobra.Command{
 	Use:     "switch",
-	Short:   "move to a worktree",
+	Short:   "Move to a worktree",
 	Aliases: []string{"s", "cd"},
 	Args:    cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) (validArgs []string, directive cobra.ShellCompDirective) {
