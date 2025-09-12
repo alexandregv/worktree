@@ -13,8 +13,14 @@ import (
 
 // switchCmd represents the switch command
 var switchCmd = &cobra.Command{
-	Use:     "switch",
-	Short:   "Move to a worktree",
+	Use:   "switch",
+	Short: "Move to a specified worktree",
+	Long: `
+	Move to a specified worktree.
+
+	Use ` + "`wt switch -` or `wt -`" + ` to go back to previous worktree.
+	Previous worktree will be saved in git config under key 'alexandregv-worktree.lastworktree'.
+	`,
 	Aliases: []string{"s", "cd"},
 	Args:    cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 	ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) (validArgs []string, directive cobra.ShellCompDirective) {
