@@ -37,7 +37,7 @@ func fromDefaults(inputs []string, customOptions []string) (options *fzfLib.Opti
 	}
 
 	options.Input = make(chan string)
-	options.Output = make(chan string)
+	options.Output = make(chan string, 1)
 
 	go func() {
 		defer close(options.Input)

@@ -37,21 +37,6 @@ func OpenTUI() {
 		os.Exit(fzfLib.ExitError)
 	}
 
-	done := make(chan bool, 1)
-
-	// Capture fzf output, get corresponding worktree by index
-	go func() {
-		out := <-fzfOptions.Output
-		i, err := strconv.Atoi(strings.Split(out, ":")[0])
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "worktree: Error parsing fzf output: %s\n", err.Error())
-			os.Exit(1)
-		}
-		fmt.Println(worktrees[i].Path)
-		SaveLastWorktree()
-		done <- true
-	}()
-
 	// Run fzf (with BSD protector)
 	fzfLibProtec.Protect()
 	exitCode, err := fzfLib.Run(fzfOptions)
@@ -62,17 +47,19 @@ func OpenTUI() {
 
 	switch exitCode {
 	case 0:
+		i, err := strconv.Atoi(strings.Split(<-fzfOptions.Output, ":")[0])
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "worktree: Error parsing fzf output: %s\n", err.Error())
+			os.Exit(1)
+		}
+		fmt.Println(worktrees[i].Path)
+		SaveLastWorktree()
 	case 130:
 		fmt.Println("^C")
 		os.Exit(130)
 	default:
 		fmt.Fprintf(os.Stderr, "worktree: Could not run fzf: %s\n", err.Error())
 		os.Exit(exitCode)
-	}
-
-	select {
-	case <-done:
-		os.Exit(0)
 	}
 }
 
