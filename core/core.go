@@ -37,6 +37,8 @@ func OpenTUI() {
 		os.Exit(fzfLib.ExitError)
 	}
 
+	done := make(chan bool, 1)
+
 	// Capture fzf output, get corresponding worktree by index
 	go func() {
 		out := <-fzfOptions.Output
@@ -46,6 +48,8 @@ func OpenTUI() {
 			os.Exit(1)
 		}
 		fmt.Println(worktrees[i].Path)
+		SaveLastWorktree()
+		done <- true
 	}()
 
 	// Run fzf (with BSD protector)
@@ -54,5 +58,31 @@ func OpenTUI() {
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "worktree: Could not run fzf: %s\n", err.Error())
 		os.Exit(exitCode)
+	}
+
+	switch exitCode {
+	case 0:
+	case 130:
+		fmt.Println("^C")
+		os.Exit(130)
+	default:
+		fmt.Fprintf(os.Stderr, "worktree: Could not run fzf: %s\n", err.Error())
+		os.Exit(exitCode)
+	}
+
+	select {
+	case <-done:
+		os.Exit(0)
+	}
+}
+
+func SaveLastWorktree() {
+	cwd, err := os.Getwd()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "worktree: Could not get current working directory to save last worktree (wt switch -): %s\n", err.Error())
+	}
+	err = git.SetConfig("alexandregv-worktree.lastworktree", cwd)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "worktree: Could not save last worktree to git config (wt switch -): %s\n", err.Error())
 	}
 }

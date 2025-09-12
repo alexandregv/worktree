@@ -170,3 +170,21 @@ func CommandOutput(args ...string) (out strings.Builder, err error) {
 	}
 	return out, nil
 }
+
+// SetConfig sets the git config key/value pair
+func SetConfig(key string, value string, args ...string) (err error) {
+	fullArgs := []string{"config", "set", key, value}
+	for _, arg := range args {
+		fullArgs = append(fullArgs, arg)
+	}
+	return Command(fullArgs...)
+}
+
+// GetConfig gets the git config key/value pair
+func GetConfig(key string, args ...string) (out strings.Builder, err error) {
+	fullArgs := []string{"config", "get", key}
+	for _, arg := range args {
+		fullArgs = append(fullArgs, arg)
+	}
+	return CommandOutput(fullArgs...)
+}
