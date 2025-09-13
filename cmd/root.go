@@ -13,9 +13,16 @@ var rootCmd = &cobra.Command{
 	Short:              "Git worktree CLI utility",
 	Long:               `CLI utility to easily navigate between Git worktrees, list them, clone a multiple-worktrees-enabled repo, etc.`,
 	DisableFlagParsing: true, // Needed for `wt -` to work
+	Args:               cobra.RangeArgs(0, 1),
+	ValidArgs:          []string{"-", "-h", "--help"},
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 1 && args[0] == "-" {
-			switchCmd.Run(switchCmd, args)
+		if len(args) == 1 {
+			switch args[0] {
+			case "-":
+				switchCmd.Run(switchCmd, args)
+			default:
+				cmd.Help()
+			}
 		} else {
 			core.OpenTUI()
 		}
