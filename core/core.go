@@ -33,7 +33,7 @@ func OpenTUI() {
 	// Init fzf options with defaults + our custom values
 	fzfOptions, err := fzf.InitFzfOptions(arrayList)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "worktree: Could not initalize fzf options: %s\n", err.Error())
+		fmt.Fprintf(os.Stderr, "worktree: Could not initialize fzf options: %s\n", err.Error())
 		os.Exit(fzfLib.ExitError)
 	}
 
