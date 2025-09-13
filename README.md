@@ -110,7 +110,7 @@ See `make help` for more commands.
 1. Do I need `fzf` installed?  
    => No, it's built in `worktree`.
 2. What if I don't want to create the shell function?  
-   => You will be able to use all commands except switching to a worktree.
+   => You will be able to use all commands except switching to a worktree. As a workaround, use `cd $(worktree)` and `cd $(worktree switch <path>)` for this matter.
 
 ### Similar projects
 
