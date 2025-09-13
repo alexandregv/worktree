@@ -93,11 +93,11 @@ Then source the file or run `exec nu` to restart your shell.
 ### Usage
 
 ```sh
-wt help          ## Help
-wt               ## Chose a worktree via TUI and switch to it
-wt list          ## List worktrees
-wt switch <name> ## Quickly switch to a named worktree
-wt clone  <link> ## Clone a repository, with worktrees at the root folder
+wt help                 ## Help
+wt                      ## Chose a worktree via TUI and switch to it
+wt list                 ## List worktrees (alias ls)
+wt switch <name>        ## Quickly switch to a named worktree (alias s, cd)
+wt clone  <link> [path] ## Clone a repository, with worktrees at the root folder
 ```
 
 ### Building
