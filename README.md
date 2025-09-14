@@ -12,27 +12,44 @@ That's it. No overkill, no you-will-never-be-able-to-work-without-it-anymore fea
 
 <!--TOC-->
 
-- [Dependencies](#dependencies)
-- [Download](#download)
-- [Setup](#setup)
-- [Usage](#usage)
-- [Building](#building)
-- [FAQ](#faq)
-- [Similar projects](#similar-projects)
-- [Contributing](#contributing)
-- [Contributors](#contributors)
-- [Stargazers over time](#stargazers-over-time)
+## Table of contents
+
+<table border="0">
+  <tr>
+    <td><a href="#dependencies">Dependencies</a></td>
+    <td></td>
+    <td><a href="#similar-projects">Similar projects</a></td>
+  </tr>
+  <tr>
+    <td><a href="#download">Download</a></td>
+    <td></td>
+    <td><a href="#contributing">Contributing</a></td>
+  </tr>
+  <tr>
+    <td><a href="#setup">Setup</a></td>
+    <td></td>
+    <td><a href="#contributors">Contributors</a></td>
+  </tr>
+  <tr>
+    <td><a href="#usage">Usage</a></td>
+    <td></td>
+    <td><a href="#stargazers-over-time">Stargazers over time</a></td>
+  </tr>
+  <tr>
+    <td><a href="#faq">FAQ</a></td>
+  </tr>
+</table>
 
 <!--TOC-->
 
-### Dependencies
+## Dependencies
 
 Only `git` is required.
 
 > [!NOTE]  
 > `worktree` uses `fzf` under the hood, but it's built in (Go library), so you don't need it installed.
 
-### Download
+## Download
 
 Download from the [Releases page](https://github.com/alexandregv/worktree/releases/latest) and place it in your `$PATH`.
 
@@ -44,7 +61,7 @@ go install github.com/alexandregv/worktree@latest
 
 This will install `worktree` in `$GOBIN`, make sure this value is in your `$PATH`.
 
-### Setup
+## Setup
 
 Creating a shell function is **required** to allow `worktree` changing the current directory (only your shell can do so).
 
@@ -108,7 +125,7 @@ Then source the file or run `exec nu` to restart your shell.
 
 </details>
 
-### Usage
+## Usage
 
 ```sh
 wt help                 ## Help
@@ -123,12 +140,12 @@ Typical flow:
 2. Navigate between worktrees with `wt` or `wt cd <worktree>`
 3. If needed, create a new worktree with `git worktree add <path> -B <branch> [base-branch]`
 
-### Building
+## Building
 
 Run `make build` or just `go build .` at the root of the directory.  
 See `make help` for more commands.
 
-### FAQ
+## FAQ
 
 1. What is a _multiple-worktrees-enabled repo_?
    => By default, a git repository has only one worktree ("active" branch). You can have multiple worktrees, and `wt clone --all <url>` will clone every branch in its own directory, at the root of your repository.
@@ -139,14 +156,14 @@ See `make help` for more commands.
 4. Why is there no `wt add` (or similar) command?  
    => The goal for `worktree` is to help you use git worktrees, while not fully replacing basic git commands. You should be able to use git worktrees even if `worktree` is not available. Creating a new worktree is simple: `git worktree add <path> -B <branch> [base-branch]`. On the other hand, `wt clone <url>` replaces `git clone --no-checkout <url>; cd <path>; git config core.bare true; for each branch -> git worktree add $(basename <branch>) -B <branch>`. A bit too cumbersome, so `worktree` implements it.
 
-### Similar projects
+## Similar projects
 
 - https://github.com/3rd/work/
 - https://github.com/yankeexe/git-worktree-switcher
 - https://github.com/davvid/gcd
 - https://github.com/egyptianbman/zsh-git-worktrees
 
-### Contributing
+## Contributing
 
 Contributions are welcome!  
 Please make sure you use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary) and branch names like `feat/<my-feature>`, `fix/<my-fix>`, etc. **`make commit` will help you with that**.  
@@ -158,10 +175,10 @@ This repository also provides a [pre-commit](https://pre-commit.com/) hook, **wh
 4. Push to the branch (`git push origin fix/list-width`)
 5. Create a new Pull Request on GitHub
 
-### Contributors
+## Contributors
 
 - [alexandregv](https://github.com/alexandregv) - Creator and maintainer
 
-### Stargazers over time
+## Stargazers over time
 
 [![Stargazers over time](https://starchart.cc/alexandregv/worktree.svg?variant=adaptive)](https://starchart.cc/alexandregv/worktree)
