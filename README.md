@@ -118,6 +118,11 @@ wt switch <name>        ## Quickly switch to a named worktree (alias s, cd)
 wt clone  <link> [path] ## Clone a repository, with worktrees at the root folder
 ```
 
+Typical flow:
+1. Clone a repo with `wt clone -a <url>`, creating a directory for each branch
+2. Navigate between worktrees with `wt` or `wt cd <worktree>`
+3. If needed, create a new worktree with `git worktree add <path> -B <branch> [base-branch]`
+
 ### Building
 
 Run `make build` or just `go build .` at the root of the directory.  
@@ -131,6 +136,8 @@ See `make help` for more commands.
    => No, it's built in `worktree`.
 3. What if I don't want to create the shell function?  
    => You will be able to use all commands except switching to a worktree. As a workaround, use `cd $(worktree)` and `cd $(worktree switch <path>)` for this matter.
+4. Why is there no `wt add` (or similar) command?  
+   => The goal for `worktree` is to help you use git worktrees, while not fully replacing basic git commands. You should be able to use git worktrees even if `worktree` is not available. Creating a new worktree is simple: `git worktree add <path> -B <branch> [base-branch]`. On the other hand, `wt clone <url>` replaces `git clone --no-checkout <url>; cd <path>; git config core.bare true; for each branch -> git worktree add $(basename <branch>) -B <branch>`. A bit too cumbersome, so `worktree` implements it.
 
 ### Similar projects
 
