@@ -22,7 +22,7 @@
 
 - [x] README
   - [x] Demo
-  - [ ] Badges
+  - [x] Badges
   - [x] Download
   - [x] Setup for main shells
   - [x] Usage
