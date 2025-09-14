@@ -45,11 +45,11 @@ repos:
     hooks:
       - id: gitleaks
 
-  - repo: https://github.com/frnmst/md-toc
-    rev: 9.0.0
-    hooks:
-      - id: md-toc
-        args: ["-c", "-p", "--skip-lines=1", "gitlab", "README.md"]
+  # - repo: https://github.com/frnmst/md-toc
+  #   rev: 9.0.0
+  #   hooks:
+  #     - id: md-toc
+  #       args: ["-c", "-p", "--skip-lines=1", "gitlab", "README.md"]
 
   # - repo: https://github.com/commitizen-tools/commitizen
   #   rev: v3.25.0
