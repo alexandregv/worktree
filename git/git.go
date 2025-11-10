@@ -152,7 +152,7 @@ func Command(args ...string) error {
 
 	err := cmd.Run()
 	if err != nil {
-		return fmt.Errorf("failed to run git command `%s`: %w", cmd.String(), err.Error())
+		return fmt.Errorf("failed to run git command `%s`: %w", cmd.String(), err)
 	}
 	return nil
 }
@@ -166,7 +166,7 @@ func CommandOutput(args ...string) (out strings.Builder, err error) {
 
 	err = cmd.Run()
 	if err != nil {
-		return out, fmt.Errorf("failed to run git command `%s`: %w", cmd.String(), err.Error())
+		return out, fmt.Errorf("failed to run git command `%s`: %w", cmd.String(), err)
 	}
 	return out, nil
 }
