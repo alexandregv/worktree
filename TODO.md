@@ -10,6 +10,7 @@
 - [x] `wt switch -` to switch back to last used worktree
 - [x] Handle branches with slashes in `NewWorktree()`
 - [x] Remove trailing .git for folder name
+- [x] Pass git args to `clone` (--depth 10)
 - [ ] Custom preview command
 - [ ] Theme
 - [ ] Configuration file

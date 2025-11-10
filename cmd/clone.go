@@ -17,6 +17,7 @@ var cloneCmd = &cobra.Command{
 	Short: "Clone a multi-worktrees repository",
 	Long: `
 	Clone a repository (as bare) and its branches as local worktrees.
+	Native git args can be passed by adding '-- [--key=val]': wt clone <url> -- --depth=10
 
 	This is the equivalent of running:
 	  git clone --no-checkout <url> <path>
@@ -24,7 +25,7 @@ var cloneCmd = &cobra.Command{
 	  git config core.bare true
 	  git worktree add $(basename <branch>) -B <branch> origin/<branch>  # for each branch if --all
 	`,
-	Args: cobra.RangeArgs(1, 2),
+	Args: cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		flagAll, err := cmd.Flags().GetBool("all")
 		if err != nil {
@@ -35,21 +36,26 @@ var cloneCmd = &cobra.Command{
 		repoURL := args[0]
 
 		var path string
-		if len(args) >= 2 {
-			path = args[1]
-		} else {
+		var gitArgs []string
+		switch len(args) {
+		case 1: // wt clone <url>
 			splits := strings.Split(strings.TrimRight(args[0], "/"), "/")
 			if len(splits) == 0 {
 				fmt.Fprintf(os.Stderr, "worktree: Invalid repository URL: %s\n", repoURL)
 				os.Exit(1)
 			}
 			path = splits[len(splits)-1]
+		case 2: // wt clone <url> [path]
+			path = args[1]
+		default: // wt clone <url> [path] [--] [git-args...]
+			path = args[1]
+			gitArgs = args[2:]
 		}
 
 		path, _ = strings.CutSuffix(path, "/")
 		path, _ = strings.CutSuffix(path, ".git")
 
-		err = git.Clone(repoURL, path, "--no-checkout")
+		err = git.Clone(repoURL, append([]string{path, "--no-checkout", "--no-single-branch"}, gitArgs...)...)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "worktree: Error cloning repository: %s\n", err.Error())
 			os.Exit(1)
