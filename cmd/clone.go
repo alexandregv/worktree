@@ -48,7 +48,7 @@ var cloneCmd = &cobra.Command{
 
 		err = git.Clone(repoURL, path, "--no-checkout")
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "worktree: Error cloning repositoru: %s\n", err.Error())
+			fmt.Fprintf(os.Stderr, "worktree: Error cloning repository: %s\n", err.Error())
 			os.Exit(1)
 		}
 
@@ -67,7 +67,7 @@ var cloneCmd = &cobra.Command{
 		if flagAll {
 			refs, err := git.Refs("remotes/origin")
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "worktree: Error listings refs/remotes/origin: %s\n", err.Error())
+				fmt.Fprintf(os.Stderr, "worktree: Error listing refs/remotes/origin: %s\n", err.Error())
 				os.Exit(1)
 			}
 
