@@ -8,6 +8,7 @@
 - [x] Clone multiple-worktrees-enabled repo (`clone` subcommand)
 - [x] Preview git log in TUI
 - [x] `wt switch -` to switch back to last used worktree
+- [x] Handle branches with slashes in `NewWorktree()`
 - [ ] Custom preview command
 - [ ] Theme
 - [ ] Configuration file
