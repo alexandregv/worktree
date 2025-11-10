@@ -13,6 +13,8 @@
 - [ ] Theme
 - [ ] Configuration file
 
+- [x] Remove trailing .git for folder name
+
 ## CLI features
 
 - [x] Basic features (help, static completion, aliases)
