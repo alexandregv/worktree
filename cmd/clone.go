@@ -108,7 +108,7 @@ var cloneCmd = &cobra.Command{
 	},
 }
 
-// init registers the list command
+// init registers the clone command
 func init() {
 	rootCmd.AddCommand(cloneCmd)
 	cloneCmd.Flags().BoolP("all", "a", false, "Create local worktrees for all branches")
