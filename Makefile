@@ -1,6 +1,6 @@
 NAME = worktree
 
-VERSION ?= $(shell git describe --tags --dirty --broken)
+VERSION ?= $(shell git describe --tags --dirty)
 
 
 all: help
@@ -21,8 +21,7 @@ help:     ## Display this help
 get-tag:      ## Get the next SemVer tag based on commits
 	go tool github.com/caarlos0/svu
 
-get-version:  ## Get the next version based on repo status (commit hash, dirty, broken)
-	# git describe --tags --dirty --broken
+get-version:  ## Get the next version based on repo status (commit hash, dirty)
 	@echo $(VERSION)
 
 commit:       ## Make a commit following the Conventional Commits convention
