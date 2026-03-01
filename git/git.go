@@ -119,7 +119,7 @@ func GitWorktreeList() ([]*Worktree, error) {
 
 // NewWorktree adds a new worktree.
 func NewWorktree(branch string) error {
-	return Command("worktree", "add", branch, "-B", branch, "origin/"+branch)
+	return Command("worktree", "add", strings.ReplaceAll(branch, "/", "_"), "-B", branch, "origin/"+branch)
 }
 
 // SetBare changes the core.bare config value.
