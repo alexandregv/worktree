@@ -46,6 +46,9 @@ var cloneCmd = &cobra.Command{
 			path = splits[len(splits)-1]
 		}
 
+		path, _ = strings.CutSuffix(path, "/")
+		path, _ = strings.CutSuffix(path, ".git")
+
 		err = git.Clone(repoURL, path, "--no-checkout")
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "worktree: Error cloning repository: %s\n", err.Error())
