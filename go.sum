@@ -605,6 +605,8 @@ github.com/stbenjam/no-sprintf-host-port v0.2.0 h1:i8pxvGrt1+4G0czLr/WnmyH7zbZ8B
 github.com/stbenjam/no-sprintf-host-port v0.2.0/go.mod h1:eL0bQ9PasS0hsyTyfTjjG+E80QIyPnBVQbYZyv20Jfk=
 github.com/stefanlogue/meteor v0.25.0 h1:LpYCTjL81QRZzII2twwGhUZF1QQ0vP/3TWs91rYM4Oo=
 github.com/stefanlogue/meteor v0.25.0/go.mod h1:vzjH+Mxa1NQP14gl7NsxjuDEkb+C+nfISwv6LiMrUvw=
+github.com/stefanlogue/meteor v0.30.0 h1:89hAnoGYrrw+WwGm+oJ7xts8kNfY31IMdRa4RMroIY4=
+github.com/stefanlogue/meteor v0.30.0/go.mod h1:vzjH+Mxa1NQP14gl7NsxjuDEkb+C+nfISwv6LiMrUvw=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.1.1/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSSt89Yw=
