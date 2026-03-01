@@ -33,7 +33,7 @@ tag:          ## Make a SemVer tag based on commits (make get-tag)
 
 ##@ Build
 build:       ## Build the Go binary
-	go build -o $(NAME) -ldflags="-s -w -X 'github.com/alexandregv/worktree.Version=${VERSION}'" .
+	go build -o $(NAME) -ldflags="-w -X 'github.com/alexandregv/worktree.Version=${VERSION}'" .
 
 
 ##@ Checks (tests, linters, etc)
