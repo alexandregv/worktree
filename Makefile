@@ -28,7 +28,7 @@ commit:       ## Make a commit following the Conventional Commits convention
 	go tool github.com/stefanlogue/meteor
 
 tag:          ## Make a SemVer tag based on commits (make get-tag)
-	git tag $(shell go tool github.com/caarlos0/svu)
+	git tag "$$($(MAKE) -s get-tag)"
 
 
 ##@ Build
