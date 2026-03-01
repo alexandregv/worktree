@@ -1,6 +1,6 @@
 NAME = worktree
 
-VERSION ?= $(shell git describe --tags --dirty --broken)
+VERSION ?= $(shell git describe --tags --dirty --always --abbrev=12)
 
 
 all: help
@@ -21,20 +21,19 @@ help:     ## Display this help
 get-tag:      ## Get the next SemVer tag based on commits
 	go tool github.com/caarlos0/svu
 
-get-version:  ## Get the next version based on repo status (commit hash, dirty, broken)
-	# git describe --tags --dirty --broken
+get-version:  ## Get the next version based on repo status (commit hash, dirty)
 	@echo $(VERSION)
 
 commit:       ## Make a commit following the Conventional Commits convention
 	go tool github.com/stefanlogue/meteor
 
 tag:          ## Make a SemVer tag based on commits (make get-tag)
-	git tag $(shell go tool github.com/caarlos0/svu)
+	git tag "$$($(MAKE) -s get-tag)"
 
 
 ##@ Build
 build:       ## Build the Go binary
-	go build -o $(NAME) -ldflags="-s -w -X 'github.com/alexandregv/worktree.Version=${VERSION}'" .
+	env CGO_ENABLED=0 go build -o $(NAME) -ldflags="-w -buildid= -X github.com/alexandregv/worktree.Version=$(VERSION)" -trimpath -buildmode=pie -buildvcs=false
 
 
 ##@ Checks (tests, linters, etc)
