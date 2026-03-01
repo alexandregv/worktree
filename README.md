@@ -140,6 +140,10 @@ Typical flow:
 2. Navigate between worktrees with `wt` or `wt cd <worktree>`
 3. If needed, create a new worktree with `git worktree add <path> -B <branch> [base-branch]`
 
+> [!NOTE]
+> For my fellow Gophers, note that the Go compiler currently has a bug where it doesn't handle `.gitdir` _files_ when compiling in a different worktree. A [fix](https://github.com/golang/go/commit/d774ced6a97d3e354d92e874861fb24d7527e3cb) has been submitted for Go 1.27.  
+> As a workaround, use `go build -buildvcs=false <...>` to disable VCS (git) info embedding, avoiding the bug.
+
 ## Building
 
 Run `make build` or just `go build .` at the root of the directory.  
