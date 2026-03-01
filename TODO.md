@@ -9,11 +9,10 @@
 - [x] Preview git log in TUI
 - [x] `wt switch -` to switch back to last used worktree
 - [x] Handle branches with slashes in `NewWorktree()`
+- [x] Remove trailing .git for folder name
 - [ ] Custom preview command
 - [ ] Theme
 - [ ] Configuration file
-
-- [x] Remove trailing .git for folder name
 
 ## CLI features
 
